@@ -3,35 +3,13 @@ import PromosGrid from "@/components/PromosGrid";
 import DestinationsCarousel from "@/components/DestinationsCarousal";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import AdventureHighlights from "@/components/AdventureHighlights";
+import { siteData } from "@/lib/data";
 
-// Force dynamic rendering so API routes are available at runtime
-export const dynamic = "force-dynamic";
+// Data is imported from a shared module that's also used by API routes
+// This ensures consistency and avoids fetch issues during SSR
 
-async function getData() {
-  // Use VERCEL_URL in production, localhost in development
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : `http://localhost:${process.env.PORT || 3000}`;
-
-  const res = await fetch(`${baseUrl}/api/data`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch data: ${res.status}`);
-  }
-
-  return res.json();
-}
-
-export default async function Page() {
-  const data = await getData();
-
-  const hero = data?.hero ?? { eyebrow: "", title: "", cta: "" };
-  const promos = data?.promos ?? [];
-  const destinations = data?.destinations ?? [];
-  const features = data?.features ?? [];
-  const adventureHighlights = data?.adventureHighlights ?? [];
+export default function Page() {
+  const { hero, promos, destinations, features, adventureHighlights } = siteData;
 
   return (
     <main className="min-h-screen bg-rose-50">
