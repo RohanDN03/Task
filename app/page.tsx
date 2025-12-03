@@ -4,26 +4,29 @@ import DestinationsCarousel from "@/components/DestinationsCarousal";
 import FeaturesGrid from "@/components/FeaturesGrid";
 import AdventureHighlights from "@/components/AdventureHighlights";
 
-
-
 async function getData() {
-  const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL;
+  // Use VERCEL_URL (provided by Vercel in production) — do NOT rely on NEXT_PUBLIC_*
+  const vercelHost = process.env.VERCEL_URL;
   const port = process.env.PORT ?? 3000;
-  const base =
-    vercelUrl && vercelUrl.length > 0
-      ? `https://${vercelUrl}`
-      : `http://localhost:${port}`;
+
+  // Build absolute base URL:
+  // - On Vercel: https://<VERCEL_URL>
+  // - Locally: http://localhost:<port>
+  const base = vercelHost ? `https://${vercelHost}` : `http://localhost:${port}`;
   const url = `${base}/api/data`;
 
   const res = await fetch(url, { cache: "no-store" });
+
   if (!res.ok) {
-    throw new Error("Failed to fetch /api/data: " + res.statusText);
+    // Throw a helpful error (includes status and body) so server logs show the real reason
+    const text = await res.text().catch(() => "");
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText} ${text}`);
   }
+
   return res.json();
 }
 
-export default async function Page() 
- {
+export default async function Page() {
   const data = await getData();
 
   const hero = data?.hero ?? { eyebrow: "", title: "", cta: "" };
