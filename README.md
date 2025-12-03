@@ -56,6 +56,8 @@ The entire UI is **data-driven**, consuming JSON from `/api/data`, making the st
 
 ![Project Structure](./project_structure.png)
 
+
+
 ---
 
 ## 🧠 Assumptions
@@ -148,3 +150,4 @@ npm run dev
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/mansimore0817)
 
 <p align="center">Built by <b>Mansi More</b> • moremansi1707@gmail.com</p>
+
